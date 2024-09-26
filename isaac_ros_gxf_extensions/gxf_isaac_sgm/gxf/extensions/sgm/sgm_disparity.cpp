@@ -113,29 +113,29 @@ gxf_result_t SGMDisparity::registerInterface(gxf::Registrar* registrar) {
       "Transmitter to send the data");
   result &= registrar->parameter(pool_, "pool", "Pool", "Memory pool for allocating output data");
   result &= registrar->parameter(
-      backend_, "backend", "Backend", "The disparity computation backend", std::string("CUDA"));
+      backend_, "backend", "Backend", "The disparity computation backend", std::string("ORIN"));
   result &= registrar->parameter(
       max_disparity_, "max_disparity", "Max Disparity",
       "The maximum value of disparity search range, has to be positive", 256.0f);
   result &= registrar->parameter(
       confidence_threshold_, "confidence_threshold", "Confidence Threshold",
-      "The confidence threshold for VPI SGM algorithm", 65023);
+      "The confidence threshold for VPI SGM algorithm", 32767);
   result &= registrar->parameter(
       confidence_type_, "confidence_type", "Confidence Type",
-      "Defines the way the confidence values are computed", 0);  // VPI_STEREO_CONFIDENCE_ABSOLUTE
+      "Defines the way the confidence values are computed", (int)VPI_STEREO_CONFIDENCE_INFERENCE);
   result &= registrar->parameter(
       window_size_, "window_size", "Window Size", "The window size for SGM disparity calculation",
-      7);
+      5);
   result &= registrar->parameter(
       num_passes_, "num_passes", "Num Passes", "The number of passes SGM takes to compute result",
-      2);
+      3);
   result &= registrar->parameter(
-      p1_, "p1_", "P1", "Penalty on disparity changes of +/- 1 between neighbor pixels.", 8);
+      p1_, "p1_", "P1", "Penalty on disparity changes of +/- 1 between neighbor pixels.", 3);
   result &= registrar->parameter(
       p2_, "p2_", "P2", "Penalty on disparity changes of more than 1 between neighbor pixels.",
-      120);
-  result &= registrar->parameter(p2_alpha_, "p2_alpha", "P2 Alpha", "Alpha for P2", 1);
-  result &= registrar->parameter(quality_, "quality", "Quality", "Quality of disparity output", 1);
+      48);
+  result &= registrar->parameter(p2_alpha_, "p2_alpha", "P2 Alpha", "Alpha for P2", 0);
+  result &= registrar->parameter(quality_, "quality", "Quality", "Quality of disparity output", 6);
   return gxf::ToResultCode(result);
 }
 
